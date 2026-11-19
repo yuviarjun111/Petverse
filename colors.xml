@@ -1,0 +1,6 @@
+<resources>
+    <color name="pv_night">#FF0E1020</color>
+    <color name="pv_violet">#FF7C5CFF</color>
+    <color name="pv_violet_dark">#FF4A30C9</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

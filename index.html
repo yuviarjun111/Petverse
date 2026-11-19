@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101b2b"><title>PETVERSE</title>
+<style>
+:root{--bg:#101b2b;--panel:#1b2a3d;--panel2:#24364b;--text:#f5f7fb;--muted:#a8b6c8;--mint:#79e2bd;--gold:#ffd479;--pink:#ff9eb5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#34506a 0,#101b2b 52%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:auto}
+.logo{font-weight:900;letter-spacing:2px;font-size:21px}.tag{font-size:11px;color:var(--mint);letter-spacing:1.4px}
+.wallet{background:#25364a;padding:9px 13px;border-radius:18px;font-weight:700;color:var(--gold)}
+main{max-width:760px;margin:auto;padding:10px 16px 100px}.greeting{font-size:13px;color:var(--muted)}h1{font-size:25px;margin:4px 0 14px}
+.card{background:linear-gradient(145deg,#22364b,#19283a);border:1px solid #344b60;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 12px 30px #0003}
+.petstage{min-height:260px;position:relative;overflow:hidden;background:linear-gradient(#8dc9c5 0%,#b7dfc5 58%,#6eaa80 59%,#4c8c69 100%);border:0;color:#203747;text-align:center}
+.sun{position:absolute;right:24px;top:18px;width:48px;height:48px;border-radius:50%;background:#ffe6a1;box-shadow:0 0 35px #fff8}
+.cloud{position:absolute;left:22px;top:36px;font-size:30px;opacity:.7}
+.petemoji{font-size:104px;line-height:1.35;filter:drop-shadow(0 8px 4px #355c4b55);position:relative;z-index:1;margin-top:25px}
+.petname{font-size:22px;font-weight:900;position:relative;z-index:1}.petmood{font-size:12px;position:relative;z-index:1}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stat{background:#ffffffb8;border-radius:12px;padding:8px;color:#254052;font-size:11px;text-align:left}.stat b{display:block;font-size:15px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}.muted{color:var(--muted);font-size:12px}
+button{border:0;border-radius:13px;padding:11px 14px;font-weight:800;background:var(--mint);color:#153247;cursor:pointer;font-size:13px}
+button.secondary{background:#344b61;color:#f4f7fa}button.gold{background:var(--gold);color:#493714}button:disabled{opacity:.35}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.actions button{padding:11px 4px;font-size:12px}
+.sectiontitle{font-size:17px;font-weight:850;margin:20px 2px 8px}.habit{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff12}.habit:last-child{border:0}.check{width:32px;height:32px;border-radius:10px;background:#344b61;color:white;display:grid;place-items:center;font-size:17px;flex:none}.check.done{background:var(--mint);color:#153247}
+.habitname{font-weight:700;font-size:13px}.reward{font-size:11px;color:var(--gold)}
+.progress{height:8px;background:#40536a;border-radius:9px;overflow:hidden;margin:8px 0}.progress span{display:block;height:100%;background:var(--mint);width:0}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#111e2df2;backdrop-filter:blur(15px);border-top:1px solid #ffffff18;display:flex;justify-content:center;z-index:5;padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+.tabs button{background:transparent;color:#9fb0c3;flex:1;max-width:145px;padding:8px 2px;font-size:11px}.tabs button.active{color:var(--mint)}
+.view{display:none}.view.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.animal{background:#26394e;border:1px solid #3a5066;border-radius:17px;padding:13px;text-align:center}.animal .emoji{font-size:45px}.animal b{display:block;font-size:13px}.animal small{color:var(--muted)}
+input{background:#122235;color:white;border:1px solid #455b70;border-radius:11px;padding:12px;width:100%;margin:7px 0}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#344b61;color:var(--mint);font-size:10px;font-weight:800}
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#f4f7fb;color:#163047;padding:11px 17px;border-radius:15px;font-weight:800;font-size:13px;display:none;z-index:10;box-shadow:0 8px 24px #0005}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+</style></head>
+<body>
+<header><div><div class="logo">🐾 PETVERSE</div><div class="tag">YOUR HABITS. YOUR PETS. YOUR WORLD.</div></div><div class="wallet">🪙 <span id="coins">100</span></div></header>
+<main>
+<section id="home" class="view active">
+<div class="greeting">WELCOME BACK, CARETAKER</div><h1>Grow together 🌱</h1>
+<div class="card petstage"><div class="sun"></div><div class="cloud">☁️</div><div class="petemoji" id="petEmoji">🐶</div><div class="petname" id="petName">Buddy</div><div class="petmood" id="petMood">Happy to see you!</div></div>
+<div class="card"><div class="row"><b>Buddy's development</b><span class="badge" id="level">LEVEL 1</span></div><div class="muted" id="xptext">0 / 100 XP</div><div class="progress"><span id="xpbar"></span></div><div class="stats"><div class="stat">😊 Happiness<b id="happy">80</b></div><div class="stat">🤝 Loyalty<b id="loyalty">10</b></div><div class="stat">⚡ Energy<b id="energy">90</b></div></div></div>
+<div class="actions"><button onclick="interact('feed')">🍖 Feed</button><button onclick="interact('play')">🎾 Play</button><button onclick="interact('pet')">💗 Pet</button><button onclick="interact('train')">🎓 Train</button></div>
+<div class="sectiontitle">Today's habits <span class="muted" id="habitcount"></span></div><div class="card" id="homeHabits"></div>
+</section>
+<section id="habits" class="view"><h1>Daily habits ✨</h1><div class="muted">Small actions. Stronger bond. Tick a habit when you've genuinely completed it.</div><div class="card" id="habitList"></div><div class="card"><b>Create your own habit</b><input id="newHabit" placeholder="e.g. Practice guitar for 20 minutes"><button onclick="addHabit()">＋ Add habit</button></div></section>
+<section id="pets" class="view"><h1>My companions 🐾</h1><div class="muted">Your growing animal family</div><div class="grid" id="myPets"></div><div class="sectiontitle">Adopt a companion</div><div class="grid" id="adoptGrid"></div></section>
+<section id="missions" class="view"><h1>Missions & rewards 🏆</h1><div class="card"><div class="row"><b>Daily caretaker</b><span class="badge">REPEAT DAILY</span></div><p class="muted">Complete 3 habits today to earn a bonus.</p><div class="progress"><span id="missionbar"></span></div><b id="missiontext">0 / 3 habits</b><br><br><button class="gold" id="missionBtn" onclick="claimMission()">Claim 30 coins + 20 XP</button></div><div class="card"><b>Milestone badges</b><p>🌱 First Steps — complete your first habit</p><p>🔥 Consistency — complete 7 habits</p><p>💞 Best Buddies — reach 100 loyalty</p></div></section>
+<section id="profile" class="view"><h1>Your journey 🌟</h1><div class="card"><b>Petverse caretaker</b><p class="muted">Your progress is saved on this device.</p><div class="stats"><div class="stat">⭐ Total XP<b id="totalxp">0</b></div><div class="stat">✅ Habits done<b id="totalhabits">0</b></div><div class="stat">🐾 Companions<b id="petcount">1</b></div></div></div><div class="card"><b>Reset game</b><p class="muted">Start a fresh save. This cannot be undone.</p><button class="secondary" onclick="resetGame()">Reset progress</button></div></section>
+</main>
+<nav class="tabs"><button class="active" onclick="show('home',this)">🏡<br>Home</button><button onclick="show('pets',this)">🐾<br>Pets</button><button onclick="show('habits',this)">🌱<br>Habits</button><button onclick="show('missions',this)">🏆<br>Missions</button><button onclick="show('profile',this)">👤<br>Profile</button></nav><div class="toast" id="toast"></div>
+<script>
+const catalog=[
+ {id:'buddy',name:'Buddy',species:'Golden Retriever',emoji:'🐶',rarity:'Common',cost:0},
+ {id:'luna',name:'Luna',species:'Persian Cat',emoji:'🐱',rarity:'Common',cost:50},
+ {id:'benny',name:'Benny',species:'Rabbit',emoji:'🐰',rarity:'Common',cost:40},
+ {id:'mochi',name:'Mochi',species:'Hamster',emoji:'🐹',rarity:'Common',cost:35},
+ {id:'max',name:'Max',species:'Husky',emoji:'🐺',rarity:'Rare',cost:140},
+ {id:'sienna',name:'Sienna',species:'Horse',emoji:'🐴',rarity:'Rare',cost:180},
+ {id:'ember',name:'Ember',species:'Fox',emoji:'🦊',rarity:'Epic',cost:250},
+ {id:'rio',name:'Rio',species:'Parrot',emoji:'🦜',rarity:'Uncommon',cost:90},
+ {id:'poppy',name:'Poppy',species:'Panda',emoji:'🐼',rarity:'Legendary',cost:500},
+ {id:'splash',name:'Splash',species:'Dolphin',emoji:'🐬',rarity:'Legendary',cost:500}
+];
+const defaultHabits=[
+ {id:1,name:'Drink a glass of water',reward:5,done:false},
+ {id:2,name:'Move your body for 15 minutes',reward:10,done:false},
+ {id:3,name:'Study or learn for 30 minutes',reward:15,done:false},
+ {id:4,name:'Read for 10 minutes',reward:10,done:false},
+ {id:5,name:'Complete one important task',reward:10,done:false}
+];
+let state=JSON.parse(localStorage.getItem('petverseSave')||'null')||{
+ coins:100,totalXP:0,totalHabits:0,habits:defaultHabits,
+ pets:[{...catalog[0],level:1,xp:0,happy:80,loyalty:10,energy:90}],
+ active:'buddy',missionClaimed:false
+};
+function save(){localStorage.setItem('petverseSave',JSON.stringify(state));render()}
+function activePet(){return state.pets.find(p=>p.id===state.active)||state.pets[0]}
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',1900)}
+function show(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
+function gain(xp,coins=0){let p=activePet();p.xp+=xp;p.loyalty=Math.min(100,p.loyalty+Math.max(1,Math.floor(xp/10)));p.happy=Math.min(100,p.happy+2);state.totalXP+=xp;state.coins+=coins;while(p.xp>=p.level*100){p.xp-=p.level*100;p.level++;toast(p.name+' reached level '+p.level+'! 🎉')}}
+function completeHabit(id){let h=state.habits.find(x=>x.id===id);if(!h||h.done)return;h.done=true;state.totalHabits++;gain(h.reward,5);toast('Habit complete! +'+h.reward+' XP, +5 coins');save()}
+function addHabit(){let input=document.getElementById('newHabit'),name=input.value.trim();if(!name)return toast('Enter a habit name');state.habits.push({id:Date.now(),name,reward:10,done:false});input.value='';save();toast('New habit added')}
+function interact(action){let p=activePet();if(action==='feed'){p.happy=Math.min(100,p.happy+8);p.energy=Math.min(100,p.energy+5);toast(p.name+' enjoyed the food! 🍖')}
+if(action==='play'){p.happy=Math.min(100,p.happy+12);p.energy=Math.max(0,p.energy-8);p.loyalty=Math.min(100,p.loyalty+3);toast('Playtime with '+p.name+'! 🎾')}
+if(action==='pet'){p.happy=Math.min(100,p.happy+6);p.loyalty=Math.min(100,p.loyalty+4);toast(p.name+' feels loved 💗')}
+if(action==='train'){gain(10,2);p.energy=Math.max(0,p.energy-5);toast('Training complete! +10 XP')}
+save()}
+function adopt(id){let a=catalog.find(x=>x.id===id);if(state.pets.some(p=>p.id===id))return toast('Already adopted');if(state.coins<a.cost)return toast('Not enough coins yet');state.coins-=a.cost;state.pets.push({...a,level:1,xp:0,happy:75,loyalty:5,energy:90});state.active=id;save();toast(a.name+' joined your family! 🐾')}
+function selectPet(id){state.active=id;save();toast('Now spending time with '+activePet().name)}
+function claimMission(){let n=state.habits.filter(h=>h.done).length;if(n<3)return toast('Complete 3 habits first');if(state.missionClaimed)return toast('Bonus already claimed today');state.missionClaimed=true;state.coins+=30;gain(20,0);save();toast('Mission reward claimed! 🏆')}
+function resetGame(){if(confirm('Reset all PETVERSE progress on this device?')){localStorage.removeItem('petverseSave');location.reload()}}
+function habitMarkup(h){return `<div class="habit"><div class="check ${h.done?'done':''}" onclick="completeHabit(${h.id})">${h.done?'✓':'○'}</div><div style="flex:1"><div class="habitname">${escapeHtml(h.name)}</div><div class="reward">+${h.reward} XP · +5 coins</div></div>${h.done?'<span class="badge">DONE</span>':''}</div>`}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){let p=activePet();document.getElementById('coins').textContent=state.coins;document.getElementById('petEmoji').textContent=p.emoji;document.getElementById('petName').textContent=p.name;document.getElementById('petMood').textContent=p.happy>70?'Happy to see you!':p.happy>40?'Ready for some attention':'A little quiet — spend time together';document.getElementById('level').textContent='LEVEL '+p.level;document.getElementById('xptext').textContent=p.xp+' / '+(p.level*100)+' XP';document.getElementById('xpbar').style.width=(p.xp/(p.level*100)*100)+'%';document.getElementById('happy').textContent=p.happy;document.getElementById('loyalty').textContent=p.loyalty;document.getElementById('energy').textContent=p.energy;
+let list=state.habits.map(h=>habitMarkup(h)).join('');document.getElementById('homeHabits').innerHTML=list;document.getElementById('habitList').innerHTML=list;document.getElementById('habitcount').textContent='('+state.habits.filter(h=>h.done).length+'/'+state.habits.length+')';
+document.getElementById('myPets').innerHTML=state.pets.map(a=>`<div class="animal" onclick="selectPet('${a.id}')"><div class="emoji">${a.emoji}</div><b>${a.name}</b><small>${a.species} · Lv.${a.level}</small><p><span class="badge">${a.id===state.active?'ACTIVE':'SELECT'}</span></p></div>`).join('');
+document.getElementById('adoptGrid').innerHTML=catalog.filter(a=>!state.pets.some(p=>p.id===a.id)).map(a=>`<div class="animal"><div class="emoji">${a.emoji}</div><b>${a.species}</b><small>${a.rarity}</small><p><button ${state.coins<a.cost?'disabled':''} onclick="adopt('${a.id}')">Adopt · 🪙${a.cost}</button></p></div>`).join('');
+let n=state.habits.filter(h=>h.done).length;document.getElementById('missionbar').style.width=Math.min(100,n/3*100)+'%';document.getElementById('missiontext').textContent=Math.min(n,3)+' / 3 habits';document.getElementById('missionBtn').disabled=n<3||state.missionClaimed;document.getElementById('missionBtn').textContent=state.missionClaimed?'Reward claimed ✓':'Claim 30 coins + 20 XP';
+document.getElementById('totalxp').textContent=state.totalXP;document.getElementById('totalhabits').textContent=state.totalHabits;document.getElementById('petcount').textContent=state.pets.length}
+render();
+</script></body></html>

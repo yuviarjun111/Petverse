@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PetVerse</string>
+    <string name="notification_channel_name">Pet reminders</string>
+    <string name="notification_channel_desc">Daily habit and pet care reminders</string>
+</resources>
